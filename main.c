@@ -14,8 +14,11 @@ int guess(void) {
     return guess;
 }
 
-bool isRight(const int guess, const int real) {
-    return guess == real;
+bool isRight(const int guess, const int real, const int remainingLives) {
+    if (guess == real) return true;
+    printf("%d is incorrect! %i remaining lives\n", guess, remainingLives);
+    if (remainingLives == 0) printf("You lose!");
+    return false;
 }
 
 int main(void) {
@@ -25,16 +28,9 @@ int main(void) {
     int lives = 10;
     do {
         guessedNum = guess();
-        if (!isRight(guessedNum, number)) {
-            printf("%d is incorrect! %i remaining lives\n", guessedNum, lives-1);
-            if (guessedNum > number) {printf("guess lower\n");} else {printf("guess higher\n");}
-        }
+        if (guessedNum > number) {printf("guess lower\n");} else if (guessedNum != number) {printf("guess higher\n");}
         lives--;
-    } while (!isRight(guessedNum, number) && lives > 0);
-    if (lives < 1 && !isRight(guessedNum, number)) {
-        printf("You lose!");
-    } else {
-        printf("number %d is correct!\n", number);
-    }
+    } while (!isRight(guessedNum, number, lives) && lives > 0);
+    if (isRight(guessedNum, number, lives)) printf("number %d is correct!\n", number);
     return 0;
 }
